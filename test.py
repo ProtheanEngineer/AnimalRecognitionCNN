@@ -1,0 +1,29 @@
+# Import necessary libraries
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+import numpy as np
+import os
+
+# Replace with the path to your trained model
+model_path = "animal_recognition_model.h5"
+
+# Load the trained model
+model = load_model(model_path)
+
+# Replace with the path to your training data directory
+train_data_directory = "test"
+
+# Define image data generator for training data
+train_datagen = ImageDataGenerator(rescale=1./255)  # You may need to adjust other parameters based on your preprocessing
+
+# Create a generator for training data
+train_generator = train_datagen.flow_from_directory(
+    train_data_directory,
+    target_size=(255, 255),
+    batch_size=32,  # Adjust the batch size based on your needs
+    class_mode='categorical'  # Assuming you have categorical labels
+)
+print(train_generator)
+# Evaluate the model on the training data
+train_evaluation = model.evaluate(train_generator)
+print("Validation Evaluation:", train_evaluation)
